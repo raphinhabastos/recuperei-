@@ -10,4 +10,4 @@ logging: console.log
 });
 const db = initdb(sequelize);
 
-export default db;
+export default db

@@ -1,33 +1,36 @@
 import db from './db.js';
 import express from 'express'
 import cors from 'cors'
+import Sequelize from 'sequelize'
+
+const {Op, col} = 'Sequelize';
+
 const app = express();
 app.use(cors());
+app.use(express.json());
 
-
-app.get('/listar',async (req, resp) => {
-    try {
-        let users = await db.tb_lista_negra.findAll()
-            
-        resp.send(users)
+app.get('/nome',async (req, resp) => {
+    
+               let users = await db.tb_lista_negra.findAll({order: [['id', 'desc']]});
+               resp.send(1);
         
-    } catch (e) {
-        resp.send({erro: e.toString()})
-    }
 });
 
 app.post('/inserir',async (req, resp) => {
+    try{
+       let nome = req.body.nome;
 
-    let adicionar = req.body;
 
-    let p = await db.tb_lista_negra.findAll()
+       let inserir = {
+          id_nome:nome,
+        }
 
-    let inserir = { 
-        id_nome : req.params.id_nome
-    }
-
-    resp.sendStatus(200);
-});
+      let inserting = await db.tb_lista_negra.create(insert);
+      resp.send(inserting)
+    }catch(e){
+      resp.send(e.toString())
+      }
+})
 
 app.listen(process.env.PORT,
-    x => console.log('Server up at port ' + process.env.PORT))
+    x => console.log(`Server up at port ${process.env.PORT}`))
